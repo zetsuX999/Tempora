@@ -15,7 +15,7 @@ Standard: TEMPORA-HA-001
 """
 
 __version__ = "1.0.0"
-__author__ = "Synara Project"
+__author__ = "Tempora Contributors"
 __license__ = "MIT OR Commercial"
 
 from tempora.coordination import (

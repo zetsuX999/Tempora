@@ -1,19 +1,9 @@
 """
-Synara Cognitive Scheduler Core (SCH-001/002)
-==============================================
+Tempora Scheduler Core
+======================
 
 Core scheduler engine implementing intelligent task scheduling,
 priority queuing, and cognitive execution decisions.
-
-Standard:     SCH-001 §5-8, SCH-002 §3-8
-Compliance:   ISO 9001:2015 §9.5, SOC 2 CC7.2
-Location:     syn/sched/core.py
-Version:      1.0.0
-
-Design Notes:
--------------
-This scheduler is designed to replace Celery with a cognitive-aware system
-that integrates with Synara's governance, reflex, and event layers.
 
 Key Features:
 - Priority-based scheduling with cognitive scoring
@@ -22,11 +12,7 @@ Key Features:
 - Dead Letter Queue (DLQ) for failed tasks
 - Tenant isolation and quota enforcement
 - Native Django/async support
-
-Celery Transition (sunset: 2026-01-15):
-- Phase 1: Shadow mode - both systems run in parallel
-- Phase 2: Cognitive primary - Celery as fallback
-- Phase 3: Celery removed
+- Distributed coordination with Raft consensus
 """
 
 from __future__ import annotations
@@ -1396,9 +1382,5 @@ class CognitiveWorker:
 
 
 # =============================================================================
-# END OF COGNITIVE SCHEDULER CORE
+# END OF TEMPORA SCHEDULER CORE
 # =============================================================================
-
-# Note: django.db.models is now imported at the top of the file (line 45)
-# Note: Exceptions have been moved to syn.sched.exceptions
-# Import from there: from tempora.exceptions import QuotaExceededError, ThrottledError

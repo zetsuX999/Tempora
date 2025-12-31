@@ -414,7 +414,7 @@ class ClusterHealthMonitor:
     Aggregates health from individual members and provides
     cluster-wide health status for alerting and decision making.
 
-    Feeds into Layer 0 (Hypothalamus) per SBL-001.
+    Provides cluster-wide health aggregation for monitoring.
     """
 
     def __init__(

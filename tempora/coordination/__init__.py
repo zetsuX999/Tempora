@@ -94,5 +94,5 @@ __all__ = [
 # Package metadata for extraction
 __package_name__ = "tempora-coordination"
 __version__ = "0.1.0"
-__author__ = "Synara"
+__author__ = "Tempora Contributors"
 __description__ = "Native distributed coordination for Tempora scheduler"
