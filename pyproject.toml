@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tempora-scheduler"
+version = "1.0.0"
+description = "Native High Availability Distributed Task Scheduler"
+readme = "README.md"
+license = {text = "MIT OR Commercial"}
+authors = [
+    {name = "Synara Project", email = "contact@synara.dev"}
+]
+maintainers = [
+    {name = "Synara Project", email = "contact@synara.dev"}
+]
+keywords = [
+    "distributed",
+    "scheduler",
+    "task-queue",
+    "high-availability",
+    "raft",
+    "consensus",
+    "clustering",
+    "leader-election",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Topic :: System :: Distributed Computing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "Django>=4.2",
+    "psycopg2-binary>=2.9.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-django>=4.8.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    "mypy>=1.8.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/synara-project/tempora"
+Documentation = "https://github.com/synara-project/tempora#readme"
+Repository = "https://github.com/synara-project/tempora.git"
+Issues = "https://github.com/synara-project/tempora/issues"
+Changelog = "https://github.com/synara-project/tempora/blob/main/CHANGELOG.md"
+
+[project.scripts]
+tempora = "tempora.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tempora*"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tempora.settings"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
+ignore = ["E501"]
