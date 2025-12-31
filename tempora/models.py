@@ -1,22 +1,20 @@
 """
-Synara Cognitive Scheduler Models (SCH-001/002)
-================================================
+Tempora Scheduler Models
+========================
 
-Django models for the cognitive scheduler implementing task management,
+Django models for the distributed task scheduler implementing task management,
 execution tracking, scheduling patterns, and dead letter queue handling.
-
-Standard:     SCH-001 §5-8, SCH-002 §5-8
-Compliance:   ISO 9001:2015 §9.5, SOC 2 CC7.2, NIST SP 800-53 SC-5
-Location:     syn/sched/models.py
-Version:      1.0.0
 
 Models:
 -------
-- CognitiveTask: Unit of work with cognitive metadata (SCH-001 §5)
-- TaskExecution: Execution attempt history (SCH-001 §6)
-- Schedule: Recurring schedule definitions (SCH-001 §6)
-- DeadLetterEntry: Failed tasks for manual review (SCH-002 §13)
-- CircuitBreakerState: Per-service circuit breaker state (SCH-002 §4)
+- CognitiveTask: Unit of work with cognitive metadata
+- TaskExecution: Execution attempt history
+- Schedule: Recurring schedule definitions
+- DeadLetterEntry: Failed tasks for manual review
+- CircuitBreakerState: Per-service circuit breaker state
+- ClusterMember: Cluster membership for distributed coordination
+- DistributedLogEntry: Raft log entries for state replication
+- FencingToken: Split-brain prevention tokens
 """
 
 from __future__ import annotations
@@ -29,9 +27,9 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 
 from django.db import models, transaction
-
-from syn.core.base_models import SynaraEntity
 from django.utils import timezone
+
+from tempora.base import TemporaEntity
 
 from tempora.types import (
     CASCADE_BUDGET,
@@ -58,7 +56,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 
-class CognitiveTask(SynaraEntity):
+class CognitiveTask(TemporaEntity):
     """
     Unit of work in the cognitive scheduler per SCH-001 §5.
 
@@ -310,7 +308,7 @@ class CognitiveTask(SynaraEntity):
         help_text="Last modification timestamp (FLD-001)",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_cognitive_task"
         verbose_name = "Cognitive Task"
         verbose_name_plural = "Cognitive Tasks"
@@ -337,10 +335,6 @@ class CognitiveTask(SynaraEntity):
                 name="idx_task_root_correlation",
             ),
         ]
-
-    class SynaraMeta:
-        event_domain = "syn.sched.cognitive_task"
-        emit_events = ["created", "updated", "deleted"]
 
     def __str__(self) -> str:
         return f"{self.task_name}:{self.id} [{self.state}]"
@@ -638,7 +632,7 @@ class CognitiveTask(SynaraEntity):
 # =============================================================================
 
 
-class TaskExecution(SynaraEntity):
+class TaskExecution(TemporaEntity):
     """
     Execution attempt record for a cognitive task per SCH-001 §6.
 
@@ -730,7 +724,7 @@ class TaskExecution(SynaraEntity):
         help_text="Last modification timestamp (FLD-001)",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_task_execution"
         verbose_name = "Task Execution"
         verbose_name_plural = "Task Executions"
@@ -742,10 +736,6 @@ class TaskExecution(SynaraEntity):
             ),
         ]
         unique_together = [["task", "attempt_number"]]
-
-    class SynaraMeta:
-        event_domain = "syn.sched.task_execution"
-        emit_events = ["created", "updated", "deleted"]
 
     def __str__(self) -> str:
         status = "✓" if self.success else "✗"
@@ -777,7 +767,7 @@ class TaskExecution(SynaraEntity):
 # =============================================================================
 
 
-class Schedule(SynaraEntity):
+class Schedule(TemporaEntity):
     """
     Recurring schedule definition per SCH-001 §6.
 
@@ -895,7 +885,7 @@ class Schedule(SynaraEntity):
         help_text="Creator identifier",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_schedule"
         verbose_name = "Schedule"
         verbose_name_plural = "Schedules"
@@ -907,10 +897,6 @@ class Schedule(SynaraEntity):
             ),
         ]
         unique_together = [["tenant_id", "schedule_id"]]
-
-    class SynaraMeta:
-        event_domain = "syn.sched.schedule"
-        emit_events = ["created", "updated", "deleted"]
 
     def __str__(self) -> str:
         status = "enabled" if self.enabled else "disabled"
@@ -1032,7 +1018,7 @@ class Schedule(SynaraEntity):
 # =============================================================================
 
 
-class DeadLetterEntry(SynaraEntity):
+class DeadLetterEntry(TemporaEntity):
     """
     Dead Letter Queue entry for tasks that exhausted retries per SCH-002 §13.
 
@@ -1135,7 +1121,7 @@ class DeadLetterEntry(SynaraEntity):
         help_text="Last modification timestamp (FLD-001)",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_dead_letter"
         verbose_name = "Dead Letter Entry"
         verbose_name_plural = "Dead Letter Entries"
@@ -1146,10 +1132,6 @@ class DeadLetterEntry(SynaraEntity):
                 name="idx_dlq_tenant_status",
             ),
         ]
-
-    class SynaraMeta:
-        event_domain = "syn.sched.dead_letter_entry"
-        emit_events = ["created", "updated", "deleted"]
 
     def __str__(self) -> str:
         return f"DLQ: {self.original_task.task_name} [{self.status}]"
@@ -1241,7 +1223,7 @@ class DeadLetterEntry(SynaraEntity):
 # =============================================================================
 
 
-class CircuitBreakerState(SynaraEntity):
+class CircuitBreakerState(TemporaEntity):
     """
     Per-service circuit breaker state per SCH-002 §4.
 
@@ -1325,14 +1307,10 @@ class CircuitBreakerState(SynaraEntity):
         help_text="Last modification timestamp (FLD-001)",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_circuit_breaker"
         verbose_name = "Circuit Breaker State"
         verbose_name_plural = "Circuit Breaker States"
-
-    class SynaraMeta:
-        event_domain = "syn.sched.circuit_breaker_state"
-        emit_events = ["created", "updated", "deleted"]
 
     def __str__(self) -> str:
         return f"{self.service_name}: {self.state}"
@@ -1478,7 +1456,7 @@ class ClusterMemberStatus(models.TextChoices):
     OFFLINE = "offline", "Offline"
 
 
-class ClusterMember(SynaraEntity):
+class ClusterMember(TemporaEntity):
     """
     Registered cluster member for Tempora distributed scheduler.
 
@@ -1594,7 +1572,7 @@ class ClusterMember(SynaraEntity):
         help_text="Additional metadata (version, capabilities, etc.)",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_cluster_member"
         verbose_name = "Cluster Member"
         verbose_name_plural = "Cluster Members"
@@ -1873,7 +1851,7 @@ class DistributedLogCommand(models.TextChoices):
     CONFIG_CHANGED = "CONFIG_CHANGED", "Config Changed"
 
 
-class DistributedLogEntry(SynaraEntity):
+class DistributedLogEntry(TemporaEntity):
     """
     Entry in the distributed command log for state replication.
 
@@ -1958,7 +1936,7 @@ class DistributedLogEntry(SynaraEntity):
         help_text="When entry was created",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_distributed_log"
         verbose_name = "Distributed Log Entry"
         verbose_name_plural = "Distributed Log Entries"
@@ -2156,7 +2134,7 @@ class DistributedLogEntry(SynaraEntity):
 # =============================================================================
 
 
-class FencingToken(SynaraEntity):
+class FencingToken(TemporaEntity):
     """
     Monotonically increasing token for split-brain prevention.
 
@@ -2215,7 +2193,7 @@ class FencingToken(SynaraEntity):
         help_text="When token was issued",
     )
 
-    class Meta(SynaraEntity.Meta):
+    class Meta(TemporaEntity.Meta):
         db_table = "sched_fencing_token"
         verbose_name = "Fencing Token"
         verbose_name_plural = "Fencing Tokens"

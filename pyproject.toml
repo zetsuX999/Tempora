@@ -9,10 +9,10 @@ description = "Native High Availability Distributed Task Scheduler"
 readme = "README.md"
 license = {text = "MIT OR Commercial"}
 authors = [
-    {name = "Synara Project", email = "contact@synara.dev"}
+    {name = "Tempora Contributors", email = "tempora@example.com"}
 ]
 maintainers = [
-    {name = "Synara Project", email = "contact@synara.dev"}
+    {name = "Tempora Contributors", email = "tempora@example.com"}
 ]
 keywords = [
     "distributed",
@@ -55,11 +55,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/synara-project/tempora"
-Documentation = "https://github.com/synara-project/tempora#readme"
-Repository = "https://github.com/synara-project/tempora.git"
-Issues = "https://github.com/synara-project/tempora/issues"
-Changelog = "https://github.com/synara-project/tempora/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/ewolters/Tempora"
+Documentation = "https://github.com/ewolters/Tempora#readme"
+Repository = "https://github.com/ewolters/Tempora.git"
+Issues = "https://github.com/ewolters/Tempora/issues"
+Changelog = "https://github.com/ewolters/Tempora/blob/master/CHANGELOG.md"
 
 [project.scripts]
 tempora = "tempora.cli:main"
